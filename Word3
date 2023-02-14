@@ -101,10 +101,17 @@ RunService:BindToRenderStep("AimLock", 0, function()
 end)
 
 
-MainSection:NewButton("(Infinite-Yield)", "(Infinite Yield)", function()
+MainSection:NewButton("(Infinite-Yield)", "(Infinite-Yield)", function()
     loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
 end)
 
+MainSection:NewButton("(Anti-Lock)", "(Anti-Lock)", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/chrsschrs/antilocks/main/aa"))()
+end)
+
+MainSection:NewButton("(Anti-Fling)", "(Anti-Fling)", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/nf4hkbUY", true))()
+end)
 
 MainSection:NewKeybind("(Hide-Skript)", "(Pressing this will open and close the skript.)", Enum.KeyCode.LeftAlt, function()
 	Library:ToggleUI()
