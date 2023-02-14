@@ -1,0 +1,133 @@
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local colors = {
+    SchemeColor = Color3.fromRGB(5, 250, 70),
+    Background = Color3.fromRGB(0, 0, 0),
+    Header = Color3.fromRGB(5, 5, 5),
+    TextColor = Color3.fromRGB(255,255,255),
+    ElementColor = Color3.fromRGB(20, 20, 20)
+}
+local Window = Library.CreateLib("Skript®(Dahood)", colors)
+--  Main/Anti
+local Main = Window:NewTab("Main")
+local MainSection = Main:NewSection("Main")
+
+
+MainSection:NewButton("(Fake-Macro)", "(X-is-the-keybind.)", function()
+local Player = game:GetService("Players").LocalPlayer
+            local Mouse = Player:GetMouse()
+            local SpeedGlitch = false
+            Mouse.KeyDown:Connect(function(Key)
+                if Key == "x" then
+                    SpeedGlitch = not SpeedGlitch
+                    if SpeedGlitch == true then
+                        repeat game:GetService("RunService").Heartbeat:wait()
+                            keypress(0x49)
+                            game:GetService("RunService").Heartbeat:wait()
+                            keypress(0x4F)
+                            game:GetService("RunService").Heartbeat:wait()
+                            keyrelease(0x49)
+                            game:GetService("RunService").Heartbeat:wait()
+                            keyrelease(0x4F)
+                            game:GetService("RunService").Heartbeat:wait()
+                        until SpeedGlitch == false
+                    end
+                end
+            end)
+end)
+
+
+
+MainSection:NewButton("(Silent-Aim)", "(No-Toggle)", function()
+local Aiming = loadstring(game:HttpGet("https://pastebin.com/raw/wy4vTkmn"))()
+Aiming.TeamCheck(false)
+ 
+local Workspace = game:GetService("Workspace")
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+ 
+local LocalPlayer = Players.LocalPlayer
+local Mouse = LocalPlayer:GetMouse()
+local CurrentCamera = Workspace.CurrentCamera
+ 
+local DaHoodSettings = {
+    SilentAim = true,
+    AimLock = false,
+    Prediction = 0.138,
+    AimLockKeybind = Enum.KeyCode.P
+}
+getgenv().DaHoodSettings = DaHoodSettings
+ 
+function Aiming.Check()
+    if not (Aiming.Enabled == true and Aiming.Selected ~= LocalPlayer and Aiming.SelectedPart ~= nil) then
+        return false
+    end
+ 
+    local Character = Aiming.Character(Aiming.Selected)
+    local KOd = Character:WaitForChild("BodyEffects")["K.O"].Value
+    local Grabbed = Character:FindFirstChild("GRABBING_CONSTRAINT") ~= nil
+ 
+    if (KOd or Grabbed) then
+        return false
+    end
+ 
+    return true
+end
+ 
+local __index
+__index = hookmetamethod(game, "__index", function(t, k)
+    if (t:IsA("Mouse") and (k == "Hit" or k == "Target") and Aiming.Check()) then
+        local SelectedPart = Aiming.SelectedPart
+ 
+        if (DaHoodSettings.SilentAim and (k == "Hit" or k == "Target")) then
+            local Hit = SelectedPart.CFrame + (SelectedPart.Velocity * DaHoodSettings.Prediction)
+ 
+            return (k == "Hit" and Hit or SelectedPart)
+        end
+    end
+ 
+    return __index(t, k)
+end)
+ 
+RunService:BindToRenderStep("AimLock", 0, function()
+    if (DaHoodSettings.AimLock and Aiming.Check() and UserInputService:IsKeyDown(DaHoodSettings.AimLockKeybind)) then
+        local SelectedPart = Aiming.SelectedPart
+ 
+        local Hit = SelectedPart.CFrame + (SelectedPart.Velocity * DaHoodSettings.Prediction)
+ 
+        CurrentCamera.CFrame = CFrame.lookAt(CurrentCamera.CFrame.Position, Hit.Position)
+    end
+    end)
+end)
+
+
+MainSection:NewButton("(Infinite-Yield)", "(Infinite Yield)", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+end)
+
+
+MainSection:NewKeybind("(Hide-Skript)", "(Pressing this will open and close the skript.)", Enum.KeyCode.LeftAlt, function()
+	Library:ToggleUI()
+end)
+
+
+-- Teleports
+local Main = Window:NewTab("Teleports")
+local MainSection = Main:NewSection("Teleports")
+
+
+MainSection:NewButton("(Gun-Buy)", "()", function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-872, -33, -530)
+end)
+
+MainSection:NewButton("(Spot-1)", "()", function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-97, 22, -208)
+end)
+
+MainSection:NewButton("(Spot-2)", "()", function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-643, 23, -289)
+end)
+
+MainSection:NewButton("(Spot-2)", "()", function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-968, 22, -406)
+end)
