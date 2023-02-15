@@ -36,86 +36,257 @@ local Player = game:GetService("Players").LocalPlayer
 end)
 
 
-
-MainSection:NewButton("(Silent-Aim)", "(No-Toggle)", function()
-local Aiming = loadstring(game:HttpGet("https://pastebin.com/raw/wy4vTkmn"))()
-Aiming.TeamCheck(false)
- 
-local Workspace = game:GetService("Workspace")
-local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
-local UserInputService = game:GetService("UserInputService")
- 
-local LocalPlayer = Players.LocalPlayer
-local Mouse = LocalPlayer:GetMouse()
-local CurrentCamera = Workspace.CurrentCamera
- 
-local DaHoodSettings = {
-    SilentAim = true,
-    AimLock = false,
-    Prediction = 0.138,
-    AimLockKeybind = Enum.KeyCode.P
-}
-getgenv().DaHoodSettings = DaHoodSettings
- 
-function Aiming.Check()
-    if not (Aiming.Enabled == true and Aiming.Selected ~= LocalPlayer and Aiming.SelectedPart ~= nil) then
-        return false
-    end
- 
-    local Character = Aiming.Character(Aiming.Selected)
-    local KOd = Character:WaitForChild("BodyEffects")["K.O"].Value
-    local Grabbed = Character:FindFirstChild("GRABBING_CONSTRAINT") ~= nil
- 
-    if (KOd or Grabbed) then
-        return false
-    end
- 
-    return true
-end
- 
-local __index
-__index = hookmetamethod(game, "__index", function(t, k)
-    if (t:IsA("Mouse") and (k == "Hit" or k == "Target") and Aiming.Check()) then
-        local SelectedPart = Aiming.SelectedPart
- 
-        if (DaHoodSettings.SilentAim and (k == "Hit" or k == "Target")) then
-            local Hit = SelectedPart.CFrame + (SelectedPart.Velocity * DaHoodSettings.Prediction)
- 
-            return (k == "Hit" and Hit or SelectedPart)
-        end
-    end
- 
-    return __index(t, k)
-end)
- 
-RunService:BindToRenderStep("AimLock", 0, function()
-    if (DaHoodSettings.AimLock and Aiming.Check() and UserInputService:IsKeyDown(DaHoodSettings.AimLockKeybind)) then
-        local SelectedPart = Aiming.SelectedPart
- 
-        local Hit = SelectedPart.CFrame + (SelectedPart.Velocity * DaHoodSettings.Prediction)
- 
-        CurrentCamera.CFrame = CFrame.lookAt(CurrentCamera.CFrame.Position, Hit.Position)
-    end
-    end)
+MainSection:NewButton("(No-Recoil)", "(Explains itself.)", function()
+    local CurrentFocus = game:GetService("Workspace").CurrentCamera.CFrame
+    game:GetService("Workspace").CurrentCamera:Destroy()
+    local Instance = Instance.new("Camera", game:GetService("Workspace"))
+    Instance.CameraSubject = game:GetService("Players").LocalPlayer.Character.Humanoid
+    Instance.CameraType = Enum.CameraType.Custom
+    Instance.CFrame = CurrentFocus
 end)
 
-
-MainSection:NewButton("(Infinite-Yield)", "(Infinite-Yield)", function()
-    loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+MainSection:NewButton("(Chat-Spy)", "(Chat-Spy)", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/bmDChs2G", true))()
 end)
 
-MainSection:NewButton("(Anti-Lock)", "(Anti-Lock)", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/chrsschrs/antilocks/main/aa"))()
+MainSection:NewButton("(Bullet-Proof)", "(Bullet-Proof)", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/tJQuYGmA", true))()
 end)
 
-MainSection:NewButton("(Anti-Fling)", "(Anti-Fling)", function()
-    loadstring(game:HttpGet("https://pastebin.com/raw/nf4hkbUY", true))()
-end)
 
 MainSection:NewKeybind("(Hide-Skript)", "(Pressing this will open and close the skript.)", Enum.KeyCode.LeftAlt, function()
 	Library:ToggleUI()
 end)
+
+
+-- Aiming
+local Main = Window:NewTab("Aiming")
+local MainSection = Main:NewSection("Aiming")
+
+
+MainSection:NewButton("(Silent-Aim)", "()", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/tYdErEHZ", true))()
+end)
+
+
+MainSection:NewButton("(Cam-Lock)", "(Q is the toggle key.)", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/dyQnwhDS", true))()
+end)
+
+
+MainSection:NewButton("(Streamable-Lock)", "(Streamable)", function()
+loadstring(game:HttpGet("https://pastebin.com/raw/SbtCNZg7"))()
+DaHoodSettings.Prediction = 0.1437
+Aiming.TargetPart = {"Head", "UpperTorso", "LowerTorso", "HumanoidRootPart", "RightFoot", "LeftFoot"}
+Aiming.FOV = 9.4
+Aiming.FOVSides = 25
+Aiming.HitChance = 110
+Aiming.ShowFOV = false
+end)
+
+
+-- Anti/Auto
+local Main = Window:NewTab("Anti/Auto")
+local MainSection = Main:NewSection("Anti/Auto")
+
+
+MainSection:NewButton("(Anti-Lock)", "(Will prevent you from being locked onto.)", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/chrsschrs/antilocks/main/aa"))()
+end)
+
+MainSection:NewButton("(Anti-Lock-V2)", "(Anti-Lock-V2)", function()
+    getgenv().demisethebest = true 
+
+    game:GetService("RunService").heartbeat:Connect(function()
+        if getgenv().demisethebest == true then 
+        local abc = game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity
+        game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(1,1,1) * (2^16)
+        game:GetService("RunService").RenderStepped:Wait()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = abc
+        end 
+    end)
+end)
+
+MainSection:NewButton("(Anti-Lock-V3)", "(Anti-Lock-V3)", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/WhZA10L3"))()  
+end)
+
+
+MainSection:NewButton("(Anti-Fling)", "(Will prevent you from being flung.)", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/uqn11FyP"))()  
+end)
+
+
+MainSection:NewButton("(Anti-Viewer)", "(Anti Aim Viewer.)", function()
+    hookfunction(game.Players.LocalPlayer.IsInGroup, function() return true end)
+    game:GetService("StarterGui"):SetCore("SendNotification", {Title = "PRIME X ZENDO RUNS U NIGGAS!", Text = "/silentaim", Duration = 4,});
+     
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Nosssa/NossLock/main/AntiAimViewer"))() 
+end)
+
+
+MainSection:NewButton("(Anti-Slow)", "(No slowness when reloading.)", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/uqn11FyP"))()  
+end)
+
+MainSection:NewButton("(Anti-Stomp)", "(Will prevent you from being stomped.)", function()
+    game.Players.LocalPlayer:GetMouse().KeyDown:Connect(function(KeyPressed)
+        if KeyPressed == "k" then
+           for L_170_forvar0, L_171_forvar1 in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+               if L_171_forvar1:IsA("BasePart") then
+                   L_171_forvar1:Destroy()
+               end
+           end
+           end
+       end)
+end)
+
+MainSection:NewButton("(Anti-Bag)", "(Prevent you from being bagged by exploiters.)", function()
+    local LP = game.Players.LocalPlayer;
+
+    for i,v in ipairs(LP.Character:GetDescendants()) do
+        if v.Name == "Christmas_Sock" then v:Destroy()
+            end
+        end
+            
+        LP.Character.ChildAdded:Connect(function()
+        wait(0.3)
+        for i,v in ipairs(LP.Character:GetDescendants()) do
+        if v.Name == "Christmas_Sock" then v:Destroy()
+        end
+        end
+        end)
+end)
+
+MainSection:NewButton("(Anti-Display-Name)", "(Will hide your display name.)", function()
+    pcall(function()
+        for i, v in pairs(game:GetService("Players"):GetPlayers()) do
+            if v.Character then
+                if v.Character:FindFirstChild("Humanoid") then
+                    v.Character:FindFirstChild("Humanoid").DisplayName = v.Name 
+                end
+            end
+        end
+    end)
+end)
+
+
+MainSection:NewButton("(Auto-Block)", "(Auto blocks you from being auto killed by an exploiter.)", function()
+    MainEvent = game:GetService('ReplicatedStorage').MainEvent
+    player = game.Players.LocalPlayer;
+    Distancia = 15; -- Here put the distance to activate
+    
+    game:GetService('RunService'):BindToRenderStep("Auto-Block", 0 , function()
+    
+        local forbidden = {'[Popcorn]','[HotDog]','[GrenadeLauncher]','[RPG]','[SMG]','[TacticalShotgun]','[AK47]','[AUG]','[Glock]', '[Shotgun]','[Flamethrower]','[Silencer]','[AR]','[Revolver]','[SilencerAR]','[LMG]','[P90]','[DrumGun]','[Double-Barrel SG]','[Hamburger]','[Chicken]','[Pizza]','[Cranberry]','[Donut]','[Taco]','[Starblox Latte]','[BrownBag]','[Weights]','[HeavyWeights]'}
+    local Found = false
+    for _,v in pairs(game.Workspace.Players:GetChildren()) do
+        if (v.UpperTorso.Position - player.Character.HumanoidRootPart.Position).Magnitude <= Distancia then
+            if v.BodyEffects.Attacking.Value == true and not table.find(forbidden, v:FindFirstChildWhichIsA('Tool').Name ) and v.Name ~= player.Name then
+                Found = true
+                MainEvent:FireServer('Block', player.Name)
+                
+            end
+        end
+    end
+    if Found == false then
+        if player.Character.BodyEffects:FindFirstChild('Block') then player.Character.BodyEffects.Block:Destroy() end
+        end
+    end)
+end)
+
+
+MainSection:NewButton("(Auto-Eat)", "(Will automatically eat food that you pickup.)", function()
+    Game.StarterGui:SetCore("SendNotification", {Title = "HSBC", Text = "Autoeat Activado [50 Health]", Duration = 60
+
+})
+
+while wait() do
+        pcall(function()
+            if game.Players.LocalPlayer.Character.Humanoid.Health > 50 then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(0, 999, 0)
+                if game.Players.LocalPlayer.Character:FindFirstChild("[Chicken]") == nil or game.Players.LocalPlayer.Backpack:FindFirstChild("[Chicken]") == nil then
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Ignored.Shop["[Chicken] - $7"].Head.CFrame
+                    wait(0.5)
+                    fireclickdetector(game.Workspace.Ignored.Shop["[Chicken] - $7"].ClickDetector)
+                end
+                pcall(function()game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack["[Chicken]"])end)
+                pcall(function()
+                    game.Players.LocalPlayer.Character["[Chicken]"]:Activate()
+                    wait(0.1)
+                    game.Players.LocalPlayer.Character["[Chicken]"]:Deactivate()
+                end)
+            end
+        end)
+    end 
+end)
+
+MainSection:NewButton("(Anti-Jump-Cooldown)", "(Will make it so you have no cooldown while jumping.)", function()
+if not game.IsLoaded(game) then 
+    game.Loaded.Wait(game.Loaded);
+end
+
+-- variables 
+local IsA = game.IsA;
+local newindex = nil 
+
+-- main hook
+newindex = hookmetamethod(game, "__newindex", function(self, Index, Value)
+    if not checkcaller() and IsA(self, "Humanoid") and Index == "JumpPower" then 
+        return
+    end
+    
+    return newindex(self, Index, Value);
+end) 
+end)
+
+
+
+
+
+
+
+
+-- Menu
+local Main = Window:NewTab("Menu's")
+local MainSection = Main:NewSection("Menu's")
+
+
+MainSection:NewButton("(Infinite-Yield)", "()", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+end)
+
+
+MainSection:NewButton("(Zapped)", "()", function()
+    loadstring(game:HttpGet('https://ekso.gq/raw/relases/zapped.lua'))()
+end)
+
+
+MainSection:NewButton("(Nova)", "()", function()
+    loadstring(game:HttpGet("https://icxy.xyz/NovaGui/NovaGui", true))()
+end)
+
+
+MainSection:NewButton("(Eletric)", "()", function()
+    loadstring(game:HttpsGet("https://raw.githubusercontent.com/MariTarziu2009/Electric/main/Electric%20%7C%20Hood%20Modded"))()
+end)
+
+
+MainSection:NewButton("(Swag)", "()", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/lerkermer/lua-projects/master/SwagModeV002'))()
+end)
+
+
+MainSection:NewButton("(Faded)", "()", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/NighterEpic/Faded/main/YesEpic", true))()
+end)
+
+
+MainSection:NewButton("(Aim-Viewer)", "()", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Raycodex/Exploiting/main/Roblox/Aim%20Viewer"))()
+end)
+
+
 
 
 -- Teleports
@@ -127,14 +298,47 @@ MainSection:NewButton("(Gun-Buy)", "()", function()
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-872, -33, -530)
 end)
 
+
 MainSection:NewButton("(Spot-1)", "()", function()
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-97, 22, -208)
 end)
+
 
 MainSection:NewButton("(Spot-2)", "()", function()
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-643, 23, -289)
 end)
 
+
 MainSection:NewButton("(Spot-2)", "()", function()
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-968, 22, -406)
 end)
+
+
+
+-- Credits
+
+local Main = Window:NewTab("Credits")
+local MainSection = Main:NewSection("Credits")
+
+MainSection:NewDropdown("Credits", "", {"ecotric", "ecotric", "ecotric"}, function(currentOption)
+
+end)
+
+MainSection:NewKeybind("(Hide-Skript)", "(Pressing this will open and close the skript.)", Enum.KeyCode.LeftAlt, function()
+	Library:ToggleUI()
+end)
+
+
+-- *
+
+loadstring(game:HttpGet("https://pastebin.com/raw/GQaiNsUY"))()
+
+
+game.StarterGui:SetCore("SendNotification", {
+    Title = "Skript";
+    Text = "Welcome Fatass";
+    Icon = "RBXID OR BLANK";
+    Duration = "DURATION IN SECONDS";
+    callbakc = bindableFunction;
+    Button1 = "Thanks";
+})
